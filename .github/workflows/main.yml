@@ -42,8 +42,10 @@ jobs:
         run: |
                wget http://archive.ubuntu.com/ubuntu/pool/universe/r/repo/repo_1.13.7-1_all.deb
                wget http://archive.ubuntu.com/ubuntu/pool/main/p/python-kerberos/python-kerberos_1.1.14-1build2_amd64.deb
-               sudo dpkg -i python-kerberos_1.1.14-1build2_amd64.deb
-               sudo dpkg -i repo_1.13.7-1_all.deb
+               wget http://mirrors.kernel.org/ubuntu/pool/main/b/bison/bison_2.4.1.dfsg-3_amd64.deb
+               wget http://mirrors.kernel.org/ubuntu/pool/main/f/flex/flex_2.5.35-9_amd64.deb
+               sudo -i
+               dpkg -i *.deb
                git config --global user.name $USER_NAME
                git config --global user.email $USER_EMAIL
        
