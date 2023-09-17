@@ -10,10 +10,13 @@ env:
   USER_NAME: N3Shemmy3
   USER_EMAIL: n3shemmy3@gmail.com
   ZIP_NAME: PE_PLUS_
-jobs:
-  build:
-    runs-on: ubuntu-latest
 
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+jobs:
+  build-deploy:
+    runs-on: ubuntu-latest
 
     steps:
        - name: Checkout
