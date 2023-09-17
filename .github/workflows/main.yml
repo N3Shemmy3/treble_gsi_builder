@@ -31,6 +31,12 @@ jobs:
         run: |
             sudo -E apt-get -qq update
             sudo -E apt-get -qq install git openjdk-8-jdk wget
+            wget http://archive.ubuntu.com/ubuntu/pool/universe/r/repo/repo_1.13.7-1_all.deb
+            wget http://archive.ubuntu.com/ubuntu/pool/main/p/python-kerberos/python-kerberos_1.1.14-1build2_amd64.deb
+            wget http://mirrors.kernel.org/ubuntu/pool/main/b/bison/bison_2.4.1.dfsg-3_amd64.deb
+            wget http://mirrors.kernel.org/ubuntu/pool/main/f/flex/flex_2.5.35-9_amd64.deb
+            sudo -i
+            dpkg -i *.deb
             sudo apt-get install android-sdk-platform-tools
             sudo bc bison build-essential curl flex g++-multilib gcc-multilib git gnupg gperf libxml2
             sudo lib32z1-dev liblz4-tool libncurses5-dev libsdl1.2-dev libwxgtk3.0-gtk3-dev imagemagick git
@@ -38,14 +44,9 @@ jobs:
             sudo xmlstarlet virtualenv xz-utils rr jq libncurses5 pngcrush lib32ncurses5-dev git-lfs libxml2
             sudo openjdk-11-jdk-headless
           
-      - name: Setting up Git and SInatll some more packages
+      - name: Setting up Git
         run: |
-               wget http://archive.ubuntu.com/ubuntu/pool/universe/r/repo/repo_1.13.7-1_all.deb
-               wget http://archive.ubuntu.com/ubuntu/pool/main/p/python-kerberos/python-kerberos_1.1.14-1build2_amd64.deb
-               wget http://mirrors.kernel.org/ubuntu/pool/main/b/bison/bison_2.4.1.dfsg-3_amd64.deb
-               wget http://mirrors.kernel.org/ubuntu/pool/main/f/flex/flex_2.5.35-9_amd64.deb
-               sudo -i
-               dpkg -i *.deb
+               
                git config --global user.name $USER_NAME
                git config --global user.email $USER_EMAIL
        
