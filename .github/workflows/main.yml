@@ -3,6 +3,9 @@ name: Building GSI..
 on:
   watch:
     types: [started]
+  push:
+    branches:
+      - master
     
 env:
   GSI_URL: https://hell.godseye.workers.dev/MMX_Whyred_21.1.6_whyred_Shubh_21.1.6_10.zip
@@ -14,16 +17,18 @@ env:
 concurrency:
   group: ${{ github.workflow }}-${{ github.ref }}
   cancel-in-progress: false
+  
 jobs:
   build-deploy:
     runs-on: ubuntu-latest
-
     steps:
-       - name: Checkout
-         uses: actions/checkout@master
+      - name: Checkout repository
+        uses: actions/checkout@v3
+        with:
+          fetch-depth: 0
            
-       - name: Initializing environment & Downloaded build packages
-         run: |
+      - name: Initializing environment & Downloaded build packages
+        run: |
             sudo -E apt-get -qq update
             sudo -E apt-get -qq install git openjdk-8-jdk wget
             sudo apt-get install android-sdk-platform-tools
@@ -33,8 +38,8 @@ jobs:
             sudo xmlstarlet virtualenv xz-utils rr jq libncurses5 pngcrush lib32ncurses5-dev git-lfs libxml2
             sudo openjdk-11-jdk-headless
           
-       - name: Setting up Git and SInatll some more packages
-         run: |
+      - name: Setting up Git and SInatll some more packages
+        run: |
                wget http://archive.ubuntu.com/ubuntu/pool/universe/r/repo/repo_1.13.7-1_all.deb
                wget http://archive.ubuntu.com/ubuntu/pool/main/p/python-kerberos/python-kerberos_1.1.14-1build2_amd64.deb
                sudo dpkg -i python-kerberos_1.1.14-1build2_amd64.deb
@@ -42,18 +47,18 @@ jobs:
                git config --global user.name $USER_NAME
                git config --global user.email $USER_EMAIL
        
-       - name: Clone Pixel Experience GSI Scripts
-         run: |
+      - name: Clone Pixel Experience GSI Scripts
+        run: |
                mkdir pixel; cd pixel
                git clone https://github.com/ponces/treble_build_pe -b thirteen
                bash treble_build_pe/build.sh 
 
-       - name: Upload Builds
-         uses: peaceiris/actions-gh-pages@v3
-         with:
-              github_token: ${{ secrets.GITHUB_TOKEN }}
-              publish_branch: builds
-              publish_dir: $HOME/builds
-              user_name: "github-actions[bot]"
-              user_email: "github-actions[bot]@users.noreply.github.com"
-              commit_message: ${{ github.event.head_commit.message }}
+      - name: Upload Builds
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+             github_token: ${{ secrets.GITHUB_TOKEN }}
+             publish_branch: builds
+             publish_dir: $HOME/builds
+             user_name: "github-actions[bot]"
+             user_email: "github-actions[bot]@users.noreply.github.com"
+             commit_message: ${{ github.event.head_commit.message }}
